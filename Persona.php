@@ -14,8 +14,8 @@ if (isset($_GET['logout']))
     header("Location: LoginApp.php");
     exit();
 }
-if (isset($_GET['del']))
- {
+if (isset($_GET['del'])) 
+{
     $del = $_GET['del'];
     if (isset($users[$del])) 
     {
@@ -28,11 +28,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 {
     $old = $_POST['old_username'];
     $newPass = trim($_POST['new_password']);
-    if ($newPass === "")
-    {
+
+    if ($newPass === "") {
         $msg = "Inserisci una nuova password.";
     } else {
-        $users[$old] = password_hash($newPass, PASSWORD_DEFAULT);
+        $users[$old] = $newPass; 
         file_put_contents($file, json_encode($users, JSON_PRETTY_PRINT));
         $msg = "Password aggiornata.";
     }
@@ -40,22 +40,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 ?>
 <!DOCTYPE html>
 <html lang="it">
-<head>
-    <meta charset="UTF-8">
-    <title>Gestione Utenti</title>
-</head>
+<head><meta charset="UTF-8"><title>Gestione Utenti</title></head>
 <body>
 <h1>Gestione Utenti</h1>
 <p>Ciao, <b><?= htmlspecialchars($_SESSION['username']) ?></b> |
 <a href="?logout=1">Logout</a></p>
-<?php if ($msg): ?>
-<p><b><?= htmlspecialchars($msg) ?></b></p>
-<?php endif; ?>
+<?php if ($msg): ?><p><b><?= htmlspecialchars($msg) ?></b></p><?php endif; ?>
 <h2>Utenti registrati</h2>
 <?php if (empty($users)): ?>
 <p>Nessun utente registrato.</p>
 <?php else: ?>
-    <?php foreach ($users as $username => $hash): ?>
+    <?php foreach ($users as $username => $password): ?>
         <form method="post" style="margin-bottom:10px;">
             <b><?= htmlspecialchars($username) ?></b><br>
             Nuova password:
